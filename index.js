@@ -12,8 +12,9 @@ const customError = (data) => {
 // with a Boolean value indicating whether or not they
 // should be required.
 const customParams = {
-  base: ['base', 'from', 'coin'],
-  quote: ['quote', 'to', 'market'],
+  // base: ['base', 'from', 'coin'],
+  // quote: ['quote', 'to', 'market'],
+  city: ['q', 'city', 'town'],
   endpoint: false
 }
 
@@ -21,14 +22,21 @@ const createRequest = (input, callback) => {
   // The Validator helps you validate the Chainlink request data
   const validator = new Validator(callback, input, customParams)
   const jobRunID = validator.validated.id
-  const endpoint = validator.validated.data.endpoint || 'price'
-  const url = `https://min-api.cryptocompare.com/data/${endpoint}`
-  const fsym = validator.validated.data.base.toUpperCase()
+  const endpoint = validator.validated.data.endpoint || 'weather'
+  // const url = `https://min-api.cryptocompare.com/data/${endpoint}`
+  const url = `http://api.openweathermap.org/data/2.5//${endpoint}`
+  const appid = process.env.API_KEY
+  // const fsym = validator.validated.data.base.toUpperCase()
+  const q = validator.validated.data.city.toUpperCase()
+
   const tsyms = validator.validated.data.quote.toUpperCase()
 
   const params = {
-    fsym,
-    tsyms
+    // fsym,
+    // tsyms
+    q,
+    appid
+
   }
 
   // This is where you would add method and headers
@@ -48,7 +56,7 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
-      response.data.result = Requester.validateResultNumber(response.data, [tsyms])
+      response.data.result = Requester.validateResultNumber(response.data, [main, temp])
       callback(response.status, Requester.success(jobRunID, response))
     })
     .catch(error => {
