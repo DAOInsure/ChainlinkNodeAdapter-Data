@@ -14,7 +14,8 @@ const customError = (data) => {
 const customParams = {
   // base: ['base', 'from', 'coin'],
   // quote: ['quote', 'to', 'market'],
-  city: ['q', 'city', 'town'],
+  lat: ['la', 'lat'],
+  lon: ['lo','lon'],
   endpoint: false
 }
 
@@ -24,17 +25,20 @@ const createRequest = (input, callback) => {
   const jobRunID = validator.validated.id
   const endpoint = validator.validated.data.endpoint || 'weather'
   // const url = `https://min-api.cryptocompare.com/data/${endpoint}`
-  const url = `http://api.openweathermap.org/data/2.5//${endpoint}`
+  const url = `http://api.openweathermap.org/data/2.5/${endpoint}`
   const appid = process.env.API_KEY
   // const fsym = validator.validated.data.base.toUpperCase()
-  const q = validator.validated.data.city.toUpperCase()
+  const la = validator.validated.data.lat
+  const lo = validator.validated.data.lon
 
-  const tsyms = validator.validated.data.quote.toUpperCase()
+
+  // const tsyms = validator.validated.data.quote.toUpperCase()
 
   const params = {
     // fsym,
     // tsyms
-    q,
+    la,
+    lo,
     appid
 
   }
