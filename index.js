@@ -1,4 +1,5 @@
 const { Requester, Validator } = require('@chainlink/external-adapter')
+require('dotenv').config();
 
 // Define custom error scenarios for the API.
 // Return true for the adapter to retry.
@@ -14,8 +15,9 @@ const customError = (data) => {
 const customParams = {
   // base: ['base', 'from', 'coin'],
   // quote: ['quote', 'to', 'market'],
-  lat: ['la', 'lat'],
-  lon: ['lo','lon'],
+  lat: ['lat'],
+  lon: ['lon'],
+  date: ['dt'],
   endpoint: false
 }
 
@@ -23,13 +25,13 @@ const createRequest = (input, callback) => {
   // The Validator helps you validate the Chainlink request data
   const validator = new Validator(callback, input, customParams)
   const jobRunID = validator.validated.id
-  const endpoint = validator.validated.data.endpoint || 'weather'
-  // const url = `https://min-api.cryptocompare.com/data/${endpoint}`
-  const url = `http://api.openweathermap.org/data/2.5/${endpoint}`
+  const endpoint = validator.validated.data.endpoint || 'timemachine'
+  const url = `http://api.openweathermap.org/data/2.5/onecall/${endpoint}`
   const appid = process.env.API_KEY
   // const fsym = validator.validated.data.base.toUpperCase()
-  const la = validator.validated.data.lat
-  const lo = validator.validated.data.lon
+  const lat = validator.validated.data.lat
+  const lon = validator.validated.data.lon
+  const dt = validator.validated.data.date
 
 
   // const tsyms = validator.validated.data.quote.toUpperCase()
@@ -37,8 +39,9 @@ const createRequest = (input, callback) => {
   const params = {
     // fsym,
     // tsyms
-    la,
-    lo,
+    lat,
+    lon,
+    dt,
     appid
 
   }
@@ -60,12 +63,14 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
-      response.data.result = Requester.validateResultNumber(response.data, ['hourly'])
+      response.data.result = Requester.validateResultNumber(response.data, ['current','wind_speed'])
       callback(response.status, Requester.success(jobRunID, response))
     })
     .catch(error => {
       callback(500, Requester.errored(jobRunID, error))
     })
+
+    console.log(config)
 }
 
 // This is a wrapper to allow the function to work with
