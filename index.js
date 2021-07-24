@@ -31,14 +31,12 @@ const createRequest = (input, callback) => {
   // const fsym = validator.validated.data.base.toUpperCase()
   const lat = validator.validated.data.lat
   const lon = validator.validated.data.lon
-  const dt = validator.validated.data.date
+  const dt = validator.validated.data.current.date
 
 
-  // const tsyms = validator.validated.data.quote.toUpperCase()
+  
 
   const params = {
-    // fsym,
-    // tsyms
     lat,
     lon,
     dt,
@@ -63,7 +61,7 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
-      response.data.result = Requester.validateResultNumber(response.data, ['current','wind_speed'])
+      response.data.result = Requester.validateResultNumber(response.data, ['hourly',0, 'rain', '1h'])
       callback(response.status, Requester.success(jobRunID, response))
     })
     .catch(error => {
