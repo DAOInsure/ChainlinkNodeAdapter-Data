@@ -13,8 +13,6 @@ const customError = (data) => {
 // with a Boolean value indicating whether or not they
 // should be required.
 const customParams = {
-  // base: ['base', 'from', 'coin'],
-  // quote: ['quote', 'to', 'market'],
   lat: ['lat'],
   lon: ['lon'],
   date: ['dt'],
@@ -28,7 +26,6 @@ const createRequest = (input, callback) => {
   const endpoint = validator.validated.data.endpoint || 'timemachine'
   const url = `http://api.openweathermap.org/data/2.5/onecall/${endpoint}`
   const appid = process.env.API_KEY
-  // const fsym = validator.validated.data.base.toUpperCase()
   const lat = validator.validated.data.lat
   const lon = validator.validated.data.lon
   const dt = validator.validated.data.current.date
