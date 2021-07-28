@@ -28,7 +28,7 @@ const createRequest = (input, callback) => {
   const appid = process.env.API_KEY
   const lat = validator.validated.data.lat
   const lon = validator.validated.data.lon
-  const dt = validator.validated.data.current.date
+  const dt = validator.validated.data.date
 
 
   
