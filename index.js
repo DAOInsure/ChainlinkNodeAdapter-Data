@@ -58,14 +58,15 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
-      response.data.result = Requester.validateResultNumber(response.data, ['hourly',0, 'rain', '1h'])
+      response.data.result = Requester.validateResultNumber(response.data, ['hourly',5, 'rain','1h'])
       callback(response.status, Requester.success(jobRunID, response))
+      console.log(response.data.result)
     })
     .catch(error => {
       callback(500, Requester.errored(jobRunID, error))
     })
 
-    console.log(config)
+    // console.log(config)
 }
 
 // This is a wrapper to allow the function to work with
@@ -84,7 +85,7 @@ exports.handler = (event, context, callback) => {
   })
 }
 
-// This is a wrapper to allow the function to work with
+// This is a wrapper to allohelloWorldw the function to work with
 // newer AWS Lambda implementations
 exports.handlerv2 = (event, context, callback) => {
   createRequest(JSON.parse(event.body), (statusCode, data) => {
